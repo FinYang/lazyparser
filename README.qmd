@@ -1,0 +1,69 @@
+---
+format: gfm
+---
+
+# lazyparser: Command line R-flavored argument parser
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The package `lazyparser` can be used in an R script to parse command line arguments (when the script is called from the command line) as if they are arguments to an R function.
+
+Use `lazyparser` if you
+
+1. Need a simple way of parsing command line arguments by name with minimal dependency (`lazyparser` only depends on base R);
+1. Need to specify more complex argument than the atomic types.
+1. Do not care about providing command line usage/help message.
+
+
+## Installation
+
+You can install the development version of lazyparser like so:
+
+```{r}
+#| eval: false
+remotes::install_github("FinYang/lazyparser")
+```
+
+## Example
+
+Let us say you have an R script called "example.R" you want to run from the command line with arguments
+
+``` bash
+Rscript example.R x=TRUE "y=seq_len(10)" "z = 'test'" 42L
+```
+
+The arguments can be specified using arbitrary R code. They can be very long, but there cannot be any space in one argument, if you don't wrap them in quotation marks. Use quotation marks to wrap them when you want to use a function or specify a string. The arguments are matched by name then by location, just like in regular R functions. 
+
+Inside "example.R", the following two lines can be used to parse these arguments:
+
+```{r}
+#| eval: false
+parser <- lazyparser::lazyparser(x, y = 10:1, z = "default", 
+                                 a = 1L, b = "default value of b")
+# The list of arguments goes into the function
+# This can be specified like normal function arguments
+# with optional default values
+# The default value is used if no value is provided for the argument
+args <- parser()
+```
+
+When this is being run from the command line, `parser()` will return a named list with parsed arguments. The provided arguments on the command line will be processed as regular R code so the type of the arguments can be parsed correctly. 
+
+```{r}
+#| echo: false
+parser <- lazyparser::lazyparser(x, y = 10:1, z = "default", 
+                                 a = 1L, b = "default value of b")
+args <- parser(TRUE, seq_len(10), z = "test", 42L)
+```
+
+```{r}
+str(args)
+```
+
+
+
+
+
+
+
