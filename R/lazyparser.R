@@ -21,11 +21,14 @@ parser_def <- function(...){
 
 #' @export
 lazyparser <- function(...) {
-  parser <- parser_def(...)
+  .parser_internal <- parser_def(...)
   function(...) {
     args <- list(...)
     if(length(args) > 0)
-      return(parser(...))
-    eval(str2lang(paste0("parser(", paste0(commandArgs(TRUE), collapse = ","), ")")))
+      return(.parser_internal(...))
+    e <- new.env(parent = parent.frame())
+    e$.parser_internal <- .parser_internal
+    eval(str2lang(paste0(".parser_internal(", paste0(commandArgs(TRUE), collapse = ","), ")")),
+         envir = e)
   }
 }

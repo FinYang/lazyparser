@@ -29,7 +29,8 @@ remotes::install_github("FinYang/lazyparser")
 
 Let us say you have an R script called "example.R" you want to run from the command line with arguments
 
-``` bash
+```{bash}
+#| eval: false
 Rscript example.R x=TRUE "y=seq_len(10)" "z = 'test'" 42L
 ```
 
@@ -61,9 +62,60 @@ args <- parser(TRUE, seq_len(10), z = "test", 42L)
 str(args)
 ```
 
+If you are lazy as me, you probably don't want to quote a string twice every time the script is called, but `lazyparser` will treat it as an R object if you don't:
+
+```{r}
+#| eval: false
+# example.R
+parser <- lazyparser::lazyparser(x)
+parser()
+```
+
+```{bash}
+#| eval: false
+# This will throw out an error
+Rscript example.R A
+```
+
+```{bash}
+#| error: true
+#| echo: false
+Rscript -e "parser<- lazyparser::lazyparser(x);parser()" A
+```
 
 
+```{bash}
+#| eval: false
+# This is the correct way of specify a string
+Rscript example.R '"A"'
+```
 
+```{bash}
+#| echo: false
+Rscript -e "parser<- lazyparser::lazyparser(x);parser()" '"A"'
+```
+
+As a workaround, assign the strings you might want to specify to objects with themselves as the name, then parse inside the the environment containing the objects:
+
+```{r}
+#| eval: false
+# example.R
+parser <- lazyparser::lazyparser(x)
+with(list(A = "A"), parser())
+```
+
+```{bash}
+#| eval: false
+# Now this can work
+Rscript example.R A
+```
+
+
+```{r}
+#| echo: false
+parser <- lazyparser::lazyparser(x)
+with(list(A = "A"), parser(A))
+```
 
 
 

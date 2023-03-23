@@ -66,3 +66,48 @@ str(args)
      $ z: chr "test"
      $ a: int 42
      $ b: chr "default value of b"
+
+If you are lazy as me, you probably don’t want to quote a string twice
+every time the script is called, but `lazyparser` will treat it as an R
+object if you don’t:
+
+``` r
+# example.R
+parser <- lazyparser::lazyparser(x)
+parser()
+```
+
+``` bash
+# This will throw out an error
+Rscript example.R A
+```
+
+    Error in eval(str2lang(.x)) : object 'A' not found
+    Calls: parser ... eval -> .parser_internal -> lapply -> FUN -> eval -> eval
+    Execution halted
+
+``` bash
+# This is the correct way of specify a string
+Rscript example.R '"A"'
+```
+
+    $x
+    [1] "A"
+
+As a workaround, assign the strings you might want to specify to objects
+with themselves as the name, then parse inside the the environment
+containing the objects:
+
+``` r
+# example.R
+parser <- lazyparser::lazyparser(x)
+with(list(A = "A"), parser())
+```
+
+``` bash
+# Now this can work
+Rscript example.R A
+```
+
+    $x
+    [1] "A"
