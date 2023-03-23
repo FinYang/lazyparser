@@ -14,6 +14,7 @@ Use `lazyparser` if you
 1. Need a simple way of parsing command line arguments by name with minimal dependency (`lazyparser` only depends on base R);
 1. Need to specify more complex argument than the atomic types.
 1. Do not care about providing command line usage/help message.
+1. Do not provide public access to run your script. Be aware of the security implications: `lazyparser` runs arbitrary R code provided as command line arguments in your script.
 
 
 ## Installation

@@ -14,6 +14,9 @@ Use `lazyparser` if you
     minimal dependency (`lazyparser` only depends on base R);
 2.  Need to specify more complex argument than the atomic types.
 3.  Do not care about providing command line usage/help message.
+4.  Do not provide public access to run your script. Be aware of the
+    security implications: `lazyparser` runs arbitrary R code provided
+    as command line arguments in your script.
 
 ## Installation
 
