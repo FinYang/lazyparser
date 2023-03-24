@@ -1,12 +1,13 @@
 Package: lazyparser
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Command Line R-flavored Argument Parser
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: person("Yangzhuoran Fin", "Yang", 
+    email = "yangyangzhuoran@gmail.com", role = c("aut", "cre", "cph"), 
+    comment = c(ORCID = "0000-0002-1232-8017")) 
+Description: Parse command line arguments (when the script is called 
+    from the command line) as if they are arguments to an R function.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
