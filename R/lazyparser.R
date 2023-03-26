@@ -14,7 +14,7 @@ parser_def <- function(...){
   }
   body <- bquote({
     lapply(names(environment()), function(.x) {eval(str2lang(.x))})
-    as.list(environment())
+    as.list(environment(), all.names = TRUE)
   })
   eval(call("function", as.pairlist(eval(args)), body), parent.frame())
 }
